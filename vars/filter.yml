@@ -1,0 +1,6 @@
+FT_DEVICE_TYPE: CPU # cpu or cuda
+FT_ARCH: pytorch # pytorch or openvino
+FT_DETECTION_MODEL_PATH: /usr/models/yolov8n/placa_best_nano_openvino_fp32/placa_best_nano.xml
+FT_FILTER_MODEL_PATH:
+FT_PREVIOUS_MODULE: "{{ hostvars[groups['capture-detection-grp'][0]].private_address }}"
+FT_DEBUG: "true"

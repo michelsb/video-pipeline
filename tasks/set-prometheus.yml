@@ -1,0 +1,15 @@
+- hosts: ocr-grp
+  
+  become: true
+
+  vars_files:
+    - ../vars/servers.yml
+
+  tasks:
+    - name: Create docker-compose file from template
+      template:
+        src: ../templates/prometheus.yml.j2
+        dest: "{{ prometheus_path }}"
+        owner: "{{ ansible_ssh_user }}"
+        group: "{{ ansible_ssh_user }}"        
+        mode: 0755

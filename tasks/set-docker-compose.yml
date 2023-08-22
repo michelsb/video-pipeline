@@ -1,0 +1,18 @@
+- hosts: servers
+  
+  become: true
+
+  vars_files:
+    - ../vars/servers.yml
+    - ../vars/capture-detection.yml
+    - ../vars/filter.yml
+    - ../vars/ocr.yml
+
+  tasks:
+    - name: Create docker-compose file from template
+      template:
+        src: ../templates/docker-compose.yml.j2
+        dest: "{{ compose_path }}"
+        owner: "{{ ansible_ssh_user }}"
+        group: "{{ ansible_ssh_user }}"        
+        mode: 0755

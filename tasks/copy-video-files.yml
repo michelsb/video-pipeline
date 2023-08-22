@@ -1,0 +1,17 @@
+---
+- hosts: capture-detection-grp
+  
+  become: true
+
+  vars_files:
+    - ../vars/servers.yml
+
+  tasks:
+    - name: Copying the Video's contents (sub directories/files)
+      become: true 
+      copy:
+        src: ../videos/
+        dest: "{{ video_path }}"
+        owner: "{{ ansible_ssh_user }}"
+        group: "{{ ansible_ssh_user }}"        
+        mode: 0755

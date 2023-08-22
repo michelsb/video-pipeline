@@ -1,0 +1,17 @@
+---
+- hosts: servers
+  
+  become: true
+
+  vars_files:
+    - ../vars/servers.yml
+
+  tasks:
+    - name: build base images
+      docker_image:
+        name: "{{ item }}:v1.0"
+        build:
+          path: "{{ root_path }}/y-base_image/{{ item }}"
+        source: build
+        state: present
+      loop: "{{ base_images }}"

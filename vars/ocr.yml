@@ -1,0 +1,5 @@
+OCR_DEVICE_TYPE: CPU
+OCR_ARCH: pytorch # pytorch or openvino
+OCR_DETECTION_MODEL_PATH: /usr/models/ocr_openvino_fp32/best_OCR_novo.xml
+OCR_PREVIOUS_MODULE: "{{ hostvars[groups['filter-grp'][0]].private_address }}"
+OCR_DEBUG: "true"

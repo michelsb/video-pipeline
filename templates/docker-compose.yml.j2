@@ -1,0 +1,132 @@
+version: "3.5"
+services:
+  capture-detection:
+    build: ./a-capture_car_detection
+    image: capture_car_detection
+    hostname: capture-detection
+    container_name: capture-detection
+    ports:
+      - "5555:5555"
+      - "8000:8000"
+    networks:
+      - pipe-net
+    volumes:
+      - {{ video_path }}:/usr/videos/
+      - {{ model_path }}:/usr/models/
+      - capture-detection-data:/data
+    environment:
+      - DEVICE_TYPE={{ CD_DEVICE_TYPE }}
+      - ARCH={{ CD_ARCH }}
+      - DETECTION_MODEL_PATH={{ CD_DETECTION_MODEL_PATH }}
+      - SERVICE_ID={{ CD_SERVICE_ID }}
+      - CAMERA_CONFIG_ID={{ CD_CAMERA_CONFIG_ID }}
+      - CAMERA_CONFIG_SOURCE={{ CD_CAMERA_CONFIG_SOURCE }}
+      - CAMERA_CONFIG_LOCAL={{ CD_CAMERA_CONFIG_LOCAL }}
+      - DEBUG={{ CD_DEBUG }}
+      - CAMERA_CONFIG_FPS={{ CD_CAMERA_CONFIG_FPS }}
+      - CAMERA_CONFIG_SECONDS={{ CD_CAMERA_CONFIG_SECONDS }}
+{% if scenario == "allinone" %}
+    depends_on:
+      - filter
+      - ocr
+{% endif %}
+{% if CD_DEVICE_TYPE == "cuda" %}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+{% endif %}
+
+  filter:
+    build: ./b-plate_detection_filter
+    image: plate_detection_filter
+    hostname: filter
+    container_name: filter
+    ports:
+      - "5555:5555"
+      - "8001:8001"
+    networks:
+      - pipe-net
+    environment:
+      - DEVICE_TYPE={{ FT_DEVICE_TYPE }}
+      - ARCH={{ FT_ARCH }}
+      - DETECTION_MODEL_PATH={{ FT_DETECTION_MODEL_PATH }}
+      #- FILTER_MODEL_PATH={{ FT_FILTER_MODEL_PATH }}
+      - PREVIOUS_MODULE={{ FT_PREVIOUS_MODULE }}
+      - DEBUG={{ FT_DEBUG }}
+    volumes:
+      - {{ model_path }}:/usr/models/
+      - filter-data:/data
+{% if FT_DEVICE_TYPE == "cuda" %}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+{% endif %}
+
+  ocr:
+    build: ./c-plate_ocr
+    image: plate_ocr
+    hostname: ocr
+    container_name: ocr
+    ports:
+      - "5555:5555"
+      - "8002:8002"
+    networks:
+      - pipe-net
+    environment:
+      - DEVICE_TYPE={{ OCR_DEVICE_TYPE }}
+      - ARCH={{ OCR_ARCH }}
+      - DETECTION_MODEL_PATH={{ OCR_DETECTION_MODEL_PATH }}  
+      - PREVIOUS_MODULE={{ OCR_PREVIOUS_MODULE }}
+      - DEBUG={{ OCR_DEBUG }}
+    volumes:
+      - {{ model_path }}:/usr/models/
+      #- ocr-data:/data
+      - /home/ubuntu/images:/data
+{% if OCR_DEVICE_TYPE == "cuda" %}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+{% endif %}
+
+{# opencv-webserver:    
+    build: ./z-webserver
+    image: opencv_webserver:1.0
+    hostname: opencv-webserver
+    container_name: opencv-webserver    
+    ports:      
+      - "4000:4000"
+    networks:
+      - pipe-net    
+    environment:
+      - PREVIOUS_MODULE=filter
+      #- PREVIOUS_MODULE=capture-detection
+    depends_on:
+      - capture-detection
+      - filter
+      - ocr
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu] #}
+
+networks:
+  pipe-net:
+    ipam:
+      config:
+        - subnet: 192.168.100.0/24
+
+volumes:
+  capture-detection-data: ~
+  filter-data: ~
+  ocr-data: ~

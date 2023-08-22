@@ -1,0 +1,15 @@
+---
+- hosts: servers
+  
+  become: true
+
+  vars_files:
+    - ../vars/servers.yml
+
+  tasks:
+    - name: Delete content & directory
+      become: true
+      ansible.builtin.file:
+        path: "{{ root_path }}"
+        state: absent
+        

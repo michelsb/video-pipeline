@@ -1,0 +1,24 @@
+base_images:
+  - openvino-base
+
+#device: cpu # cpu or cuda
+#architecture: pytorch # pytorch or openvino
+
+scenario: "standalone" # standalone or allinone
+
+capture_detection_name: "a-capture_car_detection"
+filter_name: "b-plate_detection_filter"
+ocr_name: "c-plate_ocr"
+
+root_path: "/home/{{ ansible_ssh_user }}/code"
+video_path: "/home/{{ ansible_ssh_user }}/videos"
+model_path: "/home/{{ ansible_ssh_user }}/models"
+grafana_path: "/home/{{ ansible_ssh_user }}/grafana"
+compose_path: "{{ root_path }}/docker-compose.yml"
+prometheus_path: "{{ grafana_path }}/prometheus.yml"
+
+
+
+
+
+

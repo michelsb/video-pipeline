@@ -1,0 +1,10 @@
+CD_DEVICE_TYPE: CPU # cpu or cuda
+CD_ARCH: pytorch # pytorch or openvino
+CD_DETECTION_MODEL_PATH: /usr/models/yolov8n/veiculo_best_nano_openvino_fp32/veiculo_best_nano.xml
+CD_SERVICE_ID: "1"
+CD_CAMERA_CONFIG_ID: "CAM123"
+CD_CAMERA_CONFIG_SOURCE: /usr/videos/Manha_Muito_Movimento_Traseira_full_15.mp4
+CD_CAMERA_CONFIG_LOCAL: "true"
+CD_DEBUG: "true"
+CD_CAMERA_CONFIG_FPS: 15
+CD_CAMERA_CONFIG_SECONDS: 30
