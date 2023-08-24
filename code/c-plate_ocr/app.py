@@ -104,7 +104,7 @@ if __name__ == "__main__":
         
         init_ocr = datetime.now().timestamp()
 
-        frame = cv2.resize(frame, (640,640), interpolation = cv2.INTER_AREA) # não tenho nenhum modelo de ocr v8 e tive que fazer essa atrocidade, deus me perdoe
+        frame = cv2.resize(frame, (640,640), interpolation = cv2.INTER_AREA) # não tenho nenhum modelo de ocr v8 e tive que fazer essa atrocidade, Deus me perdoe
 
         def ocr_detect(frame):
             global OCR_model
