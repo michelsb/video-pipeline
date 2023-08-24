@@ -81,7 +81,7 @@ if __name__ == "__main__":
                 all_plates.append((frame[y1:y2, x1:x2].copy(), cls))
                 classe = cls.item()
                 if random.random() < 0.5: #pra simular o descarte por qualidade
-                    classe -= 4
+                    classe += 5
 
                 all_plates.append((frame[y1:y2, x1:x2].copy(), classe))
 
