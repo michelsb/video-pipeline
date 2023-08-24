@@ -1,6 +1,7 @@
 *.pt
 *.mp4
 *.avi
+*.pth
 *.onnx
 *openvino*/
 __pycache__/

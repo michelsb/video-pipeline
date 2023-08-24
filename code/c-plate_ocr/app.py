@@ -23,7 +23,7 @@ from openvino.runtime import Core
 # CAPTURED_FRAME_BYTES = Summary('bytes_per_captured_frame', 'Number of bytes per captured frame')
 # CAPTURED_FRAMES = Counter('captured_frames', 'Total of captured frames')
 # DETECTION_TIME = Summary('detection_time_seconds_per_frame', 'Inference time (Inference and Clipping) per frame')
-DETECTION_MODEL_PATH = './OCR_novo.onnx'
+DETECTION_MODEL_PATH = './best_OCR_novo.pt'
 DEVICE = os.environ.get("DEVICE_TYPE")
 ####### Source configuration #######
 PREVIOUS_MODULE = '127.0.0.1'
@@ -104,8 +104,8 @@ if __name__ == "__main__":
         
         init_ocr = datetime.now().timestamp()
 
-        frame = cv2.resize(frame, (640,640), interpolation = cv2.INTER_AREA) # não tenho nenhum modelo de ocr v8 e tive que fazer essa atrocidade, Deus me perdoe
-
+        cv2.imshow('teste', frame)
+        cv2.waitKey(1)
         def ocr_detect(frame):
             global OCR_model
 
