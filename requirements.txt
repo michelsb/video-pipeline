@@ -1,0 +1,7 @@
+ultralytics
+openvino
+openvino-dev
+opencv-python
+zmq
+imagezmq
+prometheus-client
